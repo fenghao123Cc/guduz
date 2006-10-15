@@ -1,0 +1,21 @@
+guduz :  Yet another RED simulator (YaREDs)
+
+Mehmet Suzen  <mehmet.suzen@physics.org>
+Ziya Suzen  <zsuzen@acm.org>
+
+October 2006
+
+
+The Internet Traffic  congestion avoidance algorithms are becoming curicial
+for the traffic optimization, fair use of resources and quality of service. 
+guduz or YaREDs is a simple and flexiable implementation of Random Early Detection 
+algorithm of Sally Floyd, Van Jacobson. It can be used as an educational tool or
+to understand the basics of the RED algorithm.
+
+Please look at the docs directory for example results and how to use 
+the code. Further comments and suggestions you can drop us an email
+
+
+
+[1] Sally Floyd, Van Jacobson August 1993 IEEE/ACM Transactions in Networking
+

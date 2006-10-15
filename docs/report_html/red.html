@@ -1,0 +1,866 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE>Congestion Avoidance with Random Early Detection in</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.2  (Linux)">
+	<META NAME="AUTHOR" CONTENT="Mehmet Ali Suzen">
+	<META NAME="CREATED" CONTENT="20050112;21130000">
+	<META NAME="CHANGED" CONTENT="20060324;9171900">
+	<STYLE>
+	<!--
+		@page { size: 8.5in 11in; margin-left: 1.25in; margin-right: 1.25in; margin-top: 1in; margin-bottom: 0.5in }
+		P { margin-bottom: 0.08in; direction: ltr; color: #000000; widows: 2; orphans: 2 }
+		P.western { font-family: "Times New Roman", serif; font-size: 12pt; so-language: en-US }
+		P.cjk { font-family: "Times New Roman", serif; font-size: 12pt }
+		P.ctl { font-family: "Times New Roman", serif; font-size: 12pt; so-language: ar-SA }
+		A:link { color: #0000ff }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-AU" TEXT="#000000" LINK="#0000ff" DIR="LTR">
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<FONT SIZE=4 STYLE="font-size: 16pt"><B>Congestion Avoidance with
+Random Early Detection in</B></FONT></P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<FONT SIZE=4 STYLE="font-size: 16pt"><B>Packet Switching Gateways : A
+Generic Simple Simulator</B></FONT></P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<B>by </B>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<B>Mehmet A. Suzen</B></P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<B><FONT SIZE=2 STYLE="font-size: 11pt">Email :
+</FONT></B><FONT COLOR="#0000ff"><U><A HREF="../mehmet.suzen@physics.org"><B><FONT SIZE=2 STYLE="font-size: 11pt">mehmet.suzen@physics.org</FONT></B></A></U></FONT></P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<FONT SIZE=4><B>0. Introduction</B></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in">
+In this small project aiming to introduce and make short
+investigation on one of the most efficient congestion algorithm
+called Random Early Detection (RED) in packet switching networks. I
+have found  this type of queuing strategy while working in the
+Internet  Service Provider [0] to reduce effects of high load in the
+high end router, in Cisco Systems web site and I found some
+supporting articles [1] to realize this small term project. 
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in">
+Briefly, basic constituent of communication in computer networks is
+packets. And to carry  (route) those packets over different networks
+we need gateways, which are nothing but an end point in the graph
+which regulates and forwards packets between source and destination
+networks. Using simple queuing for arriving packets into gateway such
+as first in first out (FIFO) may not be convenient for busy networks
+that have a congestions or high traffic load, at least for the packet
+switching purposes.</P>
+<P LANG="en-US" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in">
+Written code is based on the paper [1], and an improvement is
+simulation code can handle arbitrary number of hosts that max packet
+rate pre-determined in an input file for a particular host. 
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT SIZE=4><B>1.
+Congestion Avoidance Algorithm</B></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">Algorithm
+given in [1]  has been implemented in C with improvements in generic
+manner. For the sake of  simplicity only packet rated per second for 
+hosts that connected to the gateway considered. Here is the
+modified-algorithm that is implemented in a simple C code; 
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">	<FONT FACE="Courier New, monospace">Read
+in Network packet rates</FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">		Loop
+time steps 
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">			Randomly
+decide which hosts are sending packets</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">			initilization</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">				avg =0</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">				count=1</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">			for
+each packet arrival</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">				if avg
+!= 0</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">					avg=(1-wq)avg+wq
+q</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">				else</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">					m=t-q_t</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">					avg=(1-wq)^m
+avg</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">				end if</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">					keep
+tract of avg</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">			if
+minth &lt;= avg &lt; maxth</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">				count
+++</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">				pb=maxp(avg-minth)/(maxth-minth)</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">				pa=pb/(1-count
+pb)</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">				with
+pa</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">					drop 
+the arriving packet</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">					keep
+track of drops</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">					count=0</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">				else
+if maxth &lt;= avg</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">					drop
+the arriving packet</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">					count=0</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">				else</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">					count=-1</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">				if q=
+=0</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">					q_time=time</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">Description
+of symbols;</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">		avg=
+average queue size</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">		q_time=start
+of the queue idle time</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">		count=packet
+since last droped packet</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">		wq=
+queue weight 
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">		minth=minimum
+threshold for queue</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">		maxth=maximum
+threshold for queue</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">		maxp=maximum
+value for pb</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">		pa=
+current packet marking probability 
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">		q=current
+queue size</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">		time=current
+time</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT SIZE=4><B>2.Simulation
+Code</B></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">Simulation
+code has been written in ANSI C  using gcc compiler on XP. Complete
+code is given in 2.1. Input file “network.ntw” contains a coloumn
+which the first number indicated number of host connected to this
+gateway, rest of the numbers are packet rates of  each host per
+second. Output files are “traffic.ntw”, “hostdrops.ntw” and
+“queues.ntw”.Output file traffic.ntw : contains coloumns at which
+time hosts sends packets which is randomly determined during
+simulation. Hostdrops file gives information that at what times
+packets are drop from a particular host. And finally queues file
+gives time evolution of average queue size and the actual queue size.
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT SIZE=4><B>	2.1
+Complete Code</B></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+</FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">Simple
+generic RED gateway simulator</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">     <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">by</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">Mehmet
+Ali Suzen</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">mehmet@suzen.net</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">January
+2005, </FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">       
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">Famagusta,
+Cyprus</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">     <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">(c)
+2005 </FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">General
+Public License</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"> <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">*/</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">#include
+&lt;stdlib.h&gt;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">#include
+&lt;stdio.h&gt;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+Prototypes                        */</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*************************************/</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">int
+main();</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">void
+get_randoms(int *numbers, int upper);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">void
+get_bin_randoms(int *numbers2, int upper);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">int
+read_network(int *hostrate);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*************************************/</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">int
+main()</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">{</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">FILE
+*fp1,*fp2,*fp3;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">int
+i,j,q,numhost,count,minth,maxth,time,simtime,m,qtime,*q_time;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">int
+*nran,*nran2,*hostrate,**hostdrops,zero,rcount;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">char
+line1[90];</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">double
+wq,avg,maxp,pa,pb,*avg_time;  </FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">zero=0;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">numhost=0;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">simtime=100;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">wq=0.002;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">minth=5;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">maxth=15;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">maxp=0.02;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">printf(&quot;
+\n&quot;); </FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">printf(&quot;
+         Simple genericRED gateway simulator \n&quot;); </FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">printf(&quot;
+\n&quot;); </FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">hostrate=(int
+*) malloc(sizeof(int));</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">numhost=read_network(hostrate);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">avg_time=(double
+*) malloc(simtime*sizeof(double));</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">q_time=(int
+*) malloc(simtime*sizeof(int));</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">nran=(int
+*) malloc((simtime+1)*(numhost+1)*sizeof(int));</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">nran2=(int
+*) malloc((numhost+1)*sizeof(int));</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">hostdrops=(int
+**) malloc((simtime+3)*sizeof(int));</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">for(i=0;i&lt;=simtime;i++){
+</FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">     
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">hostdrops[i]=(int
+*) malloc((numhost+3)*sizeof(int));</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">     <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">  
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">for(i=1;i&lt;=numhost;i++)
+{</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">printf(&quot;%d
+th hostrate = %d  packets/second \n&quot;,i,hostrate[i]); </FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">     <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+initilize hostdrops and avg_time */</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">     
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">for(time=0;
+time &lt;= simtime; time++) {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">avg_time[time]=0;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">        
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">for(i=0;i&lt;=numhost;i++)
+{</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">hostdrops[time][i]=0;
+</FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">         
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">       <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">     <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+core RED algorithm */</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">         
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">avg=0;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">         
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">count=-1;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">         
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">qtime=0;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">      
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">fp3=fopen(&quot;traffic.ntw&quot;,&quot;w&quot;);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+Find current queue size or hosts sending packet */</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">      
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">rcount=0;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+randomly pick which hosts are sending packets*/</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+ <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">get_bin_randoms(nran,(numhost+1)*(simtime+1));
+</FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">     
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">for(time=1;time&lt;=simtime;
+time++) {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+ <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">q=0;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+   <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">sprintf(line1,&quot;%d
+&quot;,time);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+ <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">for(i=1;i&lt;=numhost;i++)
+{</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+        <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">nran2[i]=nran[rcount];</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+         <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+printf(&quot;count nran2=%d\n&quot;,nran2[i]); */</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">if(nran[rcount]
+== 1) {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+       <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">q=q+hostrate[i];</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+       <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">sprintf(line1,&quot;%s%d
+&quot;,line1,hostrate[i]);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+      <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}
+else {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+       <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">sprintf(line1,&quot;%s%d
+&quot;,line1,zero);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+     <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">rcount++;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+ <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+   <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">fprintf(fp3,&quot;%s\n&quot;,line1);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">q_time[time]=q;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+  <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+loop over each host sending packet */</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+ <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">for(i=1;i&lt;=numhost;i++)
+{</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+printf(&quot;here nran2=%d\n&quot;,nran2[i]); */</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">if(nran2[i]
+== 1) {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+         <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">for(j=1;j&lt;=hostrate[i];j++)
+{</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+               <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">if(q
+!= 0) {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                  <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">avg=(1-wq)*avg+wq*q;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                  <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">avg_time[time]=avg;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                 <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}
+else {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                  <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">m=time-qtime;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                  <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">avg=pow((1-wq),m)*avg;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                  <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">avg_time[time]=avg;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+               <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">if(minth
+&lt;= avg &amp;&amp; avg &lt; maxth ) {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                  <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">count++;
+</FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                  <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">pb=maxp*(avg-minth)/(maxth-minth);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                  <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">pa=pb/(1-count*pb);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                   <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">if(pa
+&gt;= 0.015) { </FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">hostdrops[time][i]++;
+</FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">count=0;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                   <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">if(maxth
+&lt;= avg) {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">hostdrops[time][i]++;
+</FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">count=0;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                  <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}
+else {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">count=-1;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}
+</FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">if(q
+==0) {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                   <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">qtime=time;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+                <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+          <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+     <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}
+ </FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+  <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">        <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">close(fp3);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+Report Host Drops  */</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">fp1=fopen(&quot;hostdrops.ntw&quot;,&quot;w&quot;);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">     
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">for(time=1;
+time &lt; simtime; time++) {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">sprintf(line1,&quot;%5d&quot;,time);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">        
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">for(i=1;i&lt;=numhost;i++)
+{</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">sprintf(line1,&quot;%s
+%5d&quot;,line1,hostdrops[time][i]);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">         
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">fprintf(fp1,&quot;%s\n&quot;,line1);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">       <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}
+</FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">close(fp1);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+Report average and current queue size */</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">fp2=fopen(&quot;queues.ntw&quot;,&quot;w&quot;);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">     
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">for(time=1;
+time &lt;= simtime; time++) {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">      
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">fprintf(fp2,&quot;%d
+ %f  %d\n&quot;,time,avg_time[time],q_time[time]);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">       <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+printf(&quot;time=%d avg_time=%f\n&quot;,time,avg_time[time]);  */</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">      <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">close(fp2);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+Free Dynamic Arrays */</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">  
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">free(nran);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">  
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">free(hostrate);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">  
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">free(hostdrops);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">  
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">free(avg_time);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">  
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">free(q_time);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">exit(0);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/**********************************************************</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">RED
+simulator  Functions                                     </FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"> 
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">**********************************************************/</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+Get random squence over upper*/</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">void
+get_randoms(int *numbers, int upper) {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">int
+i,where;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">srand(
+(unsigned int)time( NULL ) );</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">     
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">for(i
+=upper-1; i &gt; 0; i -= 1 ){</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">       
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">numbers[i]
+= rand() % i;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">        <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+printf(&quot;numbers=%d i=%d \n&quot;,numbers[i],i);*/</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">       <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+Get random squence of 1s and 0s of uppers*/</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">void
+get_bin_randoms(int *numbers2, int upper) {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">int
+i,where;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">srand(
+(unsigned int)time( NULL ) );</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">     
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">for(i
+=0; i &lt; upper; i++ ){</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">       
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">where=rand();
+ </FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+ <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+printf(&quot;where = %d\n&quot;,where) */; </FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">       
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">numbers2[i]
+= where % 2;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">       <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+Read Network Data */</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+First line number of hosts */</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+other lines packets/sec perline */ </FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">int
+read_network(int *hostrate) {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">FILE
+*fp;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">int
+i,numhost;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">char
+line[4];</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">   
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">fp=fopen(&quot;network.ntw&quot;,&quot;r&quot;);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">      <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">i=0;
+</FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">    
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">while(!feof(fp))
+{</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">       
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">if(i
+== 0) {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">fscanf(fp,&quot;%s&quot;,line);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">realloc(hostrate,2*sizeof(int));
+</FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">sscanf(line,&quot;%d&quot;,&amp;numhost);
+</FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">/*
+printf(&quot;numhost=%d \n&quot;,numhost); */</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">         
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}
+else {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">fscanf(fp,&quot;%s&quot;,line);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">realloc(hostrate,sizeof(int)+i*sizeof(int));
+</FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">sscanf(line,&quot;%d&quot;,&amp;hostrate[i]);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">        <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">          
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">i++;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">      <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">      
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">if(numhost
+&gt;= i) {</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">         
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">printf(&quot;missing
+host in network.ntw   \n&quot;); </FONT></FONT>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">         
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">exit(0);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">        <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">  
+<FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">close(fp);</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">  <FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">return
+numhost;</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">}</FONT></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT SIZE=4><B>3.
+Investigation &amp; Simulated Network</B></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">According
+to reference [1] some fixed parameters are used  as follows;
+wq=0.002, minth=5, maxth=15 and maxp=1/50. There was 6 hosts in these
+simulations and three different states. At low, mid-range and busy
+traffic compare to maximum average queue size limit given above as
+maxth. Output files and other relavant files are given in the CD</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">With this
+report. [4]</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT SIZE=4><B>	3.1
+Low Traffic</B></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><B><FONT SIZE=4>	</FONT></B>
+Hostrates used here are 2,5,3,2,2,1 packets per second for 6 hosts.
+After simulating 100 time step.  Queues appear like this; 
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+ 
+</P>
+<P LANG="" CLASS="western" STYLE="margin-bottom: 0in"><IMG SRC="red_html_m3cb34407.jpg" NAME="Graphic1" ALIGN=LEFT HSPACE=12 WIDTH=554 HEIGHT=369 BORDER=0><BR CLEAR=LEFT><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">Current
+queue size fluctuates between 1 to 15 packets which is in the range.
+There is no host drops for this configuration. Average queue size is
+saturated around 8 packets/sec.</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT SIZE=4><B>	3.2
+Mid-Range Traffic</B></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><B><FONT SIZE=4>	</FONT></B>Hostrates
+used here are 5,7,3,6,2,4 packets per second for 6 hosts. After
+simulating 100 time step.  Queues appear like this; 
+</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<IMG SRC="red_html_m4f442ca1.png" NAME="Graphic2" ALIGN=BOTTOM WIDTH=420 HEIGHT=282 BORDER=0></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">Current
+queue size fluctuates between 1 to 25 packets which  is sometimes
+higher then the maximum threshold which leads to some drops. Average
+queue size is saturated around 13 packets/sec.</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT SIZE=4><B>	3.3.
+Busy Traffic</B></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><B><FONT SIZE=4>	</FONT></B>Hostrates
+used here are <FONT SIZE=2>12,9,4,8,5,18<FONT FACE="Courier New, monospace">
+</FONT></FONT>packets per second for 6 hosts. After simulating 100
+time step.  Queues appear like this;</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><IMG SRC="red_html_m3914f6e1.png" NAME="Graphic3" ALIGN=BOTTOM WIDTH=468 HEIGHT=315 BORDER=0></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">Current
+queue size fluctuates between 4 to 55 packets which  is  quite higher
+then the maximum threshold which leads to extreme drops. Average
+queue size is saturated around 30 packets/sec.</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT SIZE=4><B>4.
+Discussions</B></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">Investigation
+ of  RED strategy for the congested gateways demonstrates a
+probabilistic drops based on average queue size leads to more fair
+traffic distribution and avoids congestion on the gateway.  A simple
+simulator designed and implemented from a very general description of
+the algorithm given in [1]. Traffic originating from hosts connected
+to gateway randomly picked to generate traffic in a given rate.
+Results shown that even 
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">for the 
+high traffic RED algorithm regulates average queue size around the
+certain value</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">which
+implies a saturation. An improvement of the RED which called weighted
+RED 
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">is a bit
+more complicated  and needs more elaborate and detailed work.</P>
+<P LANG="en-US" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in">
+<BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><FONT SIZE=4><B>References</B></FONT></P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">[0]
+Kibris.Net Internet Services, Nicosia, Cyprus</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">[1] Sally
+Floyd,  Van Jacobson August 1993 IEEE/ACM Transactions in Networking</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">[2] Andrew
+S. Tanenbaum, Computer Networks, 3<SUP>rd</SUP> Edition Prentice-Hall
+</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">[3] C
+Programming Language , Dennis Ritchie  and  Brian W. Kernighan</P>
+<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in">[4] CD
+contains this document, outputs of  test examples, source code,
+compiled binary and  the reference [1]</P>
+<DIV TYPE=FOOTER>
+	<P LANG="en-US" STYLE="margin-right: 0.25in; margin-top: 0.3in; margin-bottom: 0in">
+	<SPAN ID="Frame1" DIR="LTR" STYLE="position: absolute; top: 0in; left: 0in; width: 0.31in; height: 0.02in; border: none; padding: 0in; background: #ffffff">
+		<P LANG="en-US" STYLE="margin-bottom: 0in"><SDFIELD TYPE=PAGE SUBTYPE=RANDOM FORMAT=PAGE>8</SDFIELD></P>
+	</SPAN><BR>
+	</P>
+</DIV>
+</BODY>
+</HTML>

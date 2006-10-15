@@ -1,0 +1,12 @@
+short term
+- improving manual 
+- More test examples :
+- Some Error Checking
+- Easier and more flexable parsing.. possibly using perl as an input files ( todo for Ziya :-)
+- implementing  FIFO, WRED and other congestion avoidance 
+- more generic topology assignment
+
+
+not short term
+- GUI Front end 
+- C++ version
