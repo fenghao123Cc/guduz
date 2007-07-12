@@ -1,10 +1,11 @@
 /* 
    Simple generic RED gateway simulator
      by Mehmet A. Suzen
-     January 2005, 
-     October 2005, 
+     January 2005, Famagusta, Cyprus
+     October 2005,  Minor Modifications
+     June 2007,  Minor Modifications 
      Famagusta, Cyprus
-     (c) 2005-2006 
+     (c) 2005-2006-2007
      General Public License 
       GPL  
 #    Copyright (C) 2006  Mehmet Suzen <mehmet.suzen@physics.org>
@@ -42,7 +43,7 @@ int main()
    FILE *fp1,*fp2,*fp3;
    int i,j,q,numhost,count,minth,maxth,time,simtime,m,qtime,*q_time;
    int *nran,*nran2,*hostrate,**hostdrops,zero,rcount;
-   char line1[90];
+   char line1[100];
    double wq,avg,maxp,pa,pb,*avg_time;  
     zero=0;
     numhost=0;
@@ -53,8 +54,13 @@ int main()
     maxp=0.02;
     printf(" \n"); 
     printf("          Simple genericRED gateway simulator \n"); 
+    printf("                      M. Suzen (c) 2005 -2007 \n"); 
     printf(" \n"); 
-    hostrate=(int *) malloc(sizeof(int));
+    printf(" \n"); 
+    printf(" \n"); 
+    printf(" \n"); 
+    printf(" \n"); 
+    hostrate=(int *) malloc(1000*sizeof(int));
     printf("  allocated hostrate \n"); 
     numhost=read_network(hostrate);
     printf("  read network file !\n"); 
@@ -67,14 +73,14 @@ int main()
       hostdrops[i]=(int *) malloc((numhost+3)*sizeof(int));
      }
     printf("  allocated other stuff !! !\n"); 
-   for(i=1;i<=numhost;i++) {
-     printf("%d th hostrate = %d  packets/second \n",i,hostrate[i]); 
+   for(i=0;i<numhost;i++) {
+     printf("%d th hostrate = %d  packets/unit time\n",i,hostrate[i]); 
     }
 
      /* initilize hostdrops and avg_time */
-      for(time=0; time <= simtime; time++) {
+      for(time=0; time < simtime; time++) {
            avg_time[time]=0;
-         for(i=0;i<=numhost;i++) {
+         for(i=0;i<numhost;i++) {
            hostdrops[time][i]=0; 
           }
        }
@@ -87,10 +93,12 @@ int main()
        rcount=0;
            /* randomly pick which hosts are sending packets*/
             get_bin_randoms(nran,(numhost+1)*(simtime+1)); 
-      for(time=1;time<=simtime; time++) {
+	     printf("core RED Algorithm \n");
+      for(time=0;time<simtime; time++) {
+	     printf("core RED Algorithm time =%d \r",time); 
             q=0;
               sprintf(line1,"%d ",time);
-            for(i=1;i<=numhost;i++) {
+            for(i=0;i<numhost;i++) {
                    nran2[i]=nran[rcount];
                     /* printf("count nran2=%d\n",nran2[i]); */
                if(nran[rcount] == 1) {
@@ -105,10 +113,10 @@ int main()
                q_time[time]=q;
                /* printf("Current time = %d QUEUE q=%d\n",time,q); */
              /* loop over each host sending packet */
-            for(i=1;i<=numhost;i++) {
+            for(i=0;i<numhost;i++) {
                /* printf("here nran2=%d\n",nran2[i]); */
                if(nran2[i] == 1) {
-                    for(j=1;j<=hostrate[i];j++) {
+                    for(j=0;j<hostrate[i];j++) {
                           if(q != 0) {
                              avg=(1-wq)*avg+wq*q;
                              avg_time[time]=avg;
@@ -149,9 +157,9 @@ int main()
     fclose(fp3);
     /* Report Host Drops  */
     fp1=fopen("hostdrops.ntw","w");
-      for(time=1; time < simtime; time++) {
+      for(time=0; time < simtime; time++) {
            sprintf(line1,"%5d",time);
-         for(i=1;i<=numhost;i++) {
+         for(i=0;i<numhost;i++) {
                 /* printf("hostdrop=%d \n",hostdrops[time][i]); */
            sprintf(line1,"%s %5d",line1,hostdrops[time][i]);
           }
@@ -161,7 +169,7 @@ int main()
     fclose(fp1);
     /* Report average and current queue size */
     fp2=fopen("queues.ntw","w");
-      for(time=1; time <= simtime; time++) {
+      for(time=0; time < simtime; time++) {
        fprintf(fp2,"%d  %f  %d\n",time,avg_time[time],q_time[time]);
        /* printf("time=%d avg_time=%f\n",time,avg_time[time]);  */
       }
@@ -172,6 +180,7 @@ int main()
    free(hostdrops);
    free(avg_time);
    free(q_time);
+	     printf("\n \n  _ _ _ RED Algorithm  finished \n"); 
     exit(0);
 }
  /**********************************************************
@@ -201,35 +210,35 @@ void get_bin_randoms(int *numbers2, int upper) {
 /* other lines packets/sec perline */ 
 int read_network(int *hostrate) {
     FILE *fp;
-    int i,numhost;
-    char line[10];
+    int i,numhost=0;
+    char line[100];
 
      i=0; 
     printf(" network file \n");
      /* while(feof(fp) == 0) {*/
     fp=fopen("network.ntw","r");
-     while( fgets(line,10,fp) != NULL) {
-            printf(" \n *** hell line is =%s \n",line); 
+     while( fgets(line,10,fp) != NULL) { 
+            /* printf(" \n *** hell line is =%s \n",line); */
         if(i == 0) {
-           realloc(hostrate,2*sizeof(int)); 
-        printf(" network hostrate realloc\n");
+           /* realloc(hostrate,2*sizeof(int));  */
+           /* printf(" network hostrate realloc\n"); */
            sscanf(line,"%3d",&numhost); 
-           printf("numhost=%d \n",numhost); 
+           /* printf("numhost=%d \n",numhost);  */
           } else {
-            printf("other then that =%s \n",line); 
-           realloc(hostrate,2*sizeof(int)+(i+1)*sizeof(int)); 
+           /* printf("other then that =%s \n",line); */
+           /*realloc(hostrate,2*sizeof(int)+(i+1)*sizeof(int));  */
            sscanf(line,"%3d",&hostrate[i]);
-           printf("hostrate i=%d rate=%d\n",i,hostrate[i]); 
+           /* printf("hostrate i=%d rate=%d\n",i,hostrate[i]);  */
         }
            i++;
-            printf("line increment i=%d numhost=%d \n",i,numhost); 
+            /* printf("line increment i=%d numhost=%d \n",i,numhost);   */
       }
-            printf("line out\n"); 
+            /* printf("line out\n");  */
        if(numhost != (i-2)) {
           printf("missing host in network.ntw ; numhost=%d total lines=%d   \n",numhost,i); 
           exit(0);
         }
    fclose(fp);
-        printf(" network file read \n");
+        printf(" network file read completed \n");
   return numhost;
 }

@@ -4,7 +4,8 @@
 #     Mehmet Suzen  <mehmet.suzen@physics.org>  (M) 
 #     Ziya Suzen  <zsuzen@acm.org>              (Z)
 #
+GCC=gcc-3.3
 all:
-	gcc -g -Wall red.c -lm -o ../bin/red
+	$(GCC) -g -ansi -Wall red.c -lm -lefence -o ../bin/red
 clean:
 	rm -f ../bin/red
